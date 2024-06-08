@@ -4,6 +4,8 @@ from llama_index.core.tools import FunctionTool, QueryEngineTool
 from llama_index.core.vector_stores import MetadataFilters, FilterCondition
 from llama_index.embeddings.openai import OpenAIEmbedding, OpenAIEmbeddingModelType
 from typing import List, Optional
+from helper import get_openai_api_key
+OPENAI_API_KEY = get_openai_api_key()
 
 def get_doc_tools(
     file_path: str,
@@ -16,7 +18,7 @@ def get_doc_tools(
     documents = SimpleDirectoryReader(input_files=[file_path]).load_data()
     splitter = SentenceSplitter(chunk_size=1024)
     nodes = splitter.get_nodes_from_documents(documents)
-    embed_model = OpenAIEmbedding(model=OpenAIEmbeddingModelType.TEXT_EMBED_3_SMALL, api_key="sk-eGmYx2KCAjrvgrTpcoeYSc6GfPlrAJmhzarFDCbjtcJnO5Ha", api_base='https://api.aiproxy.io/v1')
+    embed_model = OpenAIEmbedding(model=OpenAIEmbeddingModelType.TEXT_EMBED_3_SMALL, api_key=OPENAI_API_KEY ,api_base='https://api.aiproxy.io/v1')
     vector_index = VectorStoreIndex(nodes, embed_model=embed_model)
     
     # 向量索引（vector_index）-查询引擎（query_engine）
